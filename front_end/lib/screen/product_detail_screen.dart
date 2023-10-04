@@ -163,7 +163,9 @@ class _ProductPrices extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      "\$ ${product.websites[index].price ?? "N/A"}",
+                      product.websites[index].price == null
+                          ? 'Sold Out'
+                          : "\$ ${product.websites[index].price}",
                       style: TextStyle(
                         fontSize: 16,
                         color: Colors.grey.shade800,

@@ -3,7 +3,7 @@ import 'package:dio/dio.dart';
 import '../model/product_model.dart';
 
 class ProductRepository {
-  static const String baseUrl = "https://eb07-45-248-78-28.ngrok-free.app/";
+  static const String baseUrl = "https://9fe7-103-107-197-126.ngrok-free.app/";
   final Dio _dio;
 
   const ProductRepository(this._dio);

@@ -77,20 +77,27 @@ class ProductCard extends StatelessWidget {
   }
 
   Widget _priceTag(BoxConstraints constraints) {
-    return Row(
-      children: [
-        Expanded(
-          child: Text(
-            "\$ ${product.websites.first.price ?? 'N/A'}",
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: const TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 17,
+    return Builder(builder: (context) {
+      final price = getPrice(product.websites);
+      return Row(
+        children: [
+          Expanded(
+            child: Text(
+              price == null ? 'Sold out' : '\$ $price',
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 17,
+              ),
             ),
           ),
-        ),
-      ],
-    );
+        ],
+      );
+    });
   }
+}
+
+double? getPrice(List<WebsiteModel> list) {
+  return list.first.price ?? list.getSecond?.price;
 }
