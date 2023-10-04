@@ -2,7 +2,7 @@ const puppeteer = require("puppeteer");
 
 const website_2 = async (product_name) => {
   // headless and headfull
-  const browser = await puppeteer.launch({ headless: 'new' });
+  const browser = await puppeteer.launch({ headless: "new" });
   //   open new tab
   const page = await browser.newPage();
   //  navigate in tht new tab
@@ -28,23 +28,26 @@ const website_2 = async (product_name) => {
       return subProducts.map((card) => {
         const name =
           card.querySelector(".product-title-link")?.textContent || "N/A";
-        const price = card.querySelector(".primary")?.textContent || "N/A";
+        const price = card.querySelector(".primary")?.textContent || null;
 
-        const divElement = document.querySelector(".product-tile-v2--image");
-        const aTag = divElement.querySelector("a");
-        const link = aTag.getAttribute("href")
-          ? `https://www.woolworths.com.au${aTag.getAttribute("href")}`
-          : null;
-        const imgTag = divElement.querySelector("img");
-        const image = imgTag ? imgTag.getAttribute("src") : null;
+        const linkValue =
+          card
+            .querySelector(".product-tile-v2--image a")
+            ?.getAttribute("href") || null;
+        const link = `https://www.woolworths.com.au${linkValue}`;
+        const image =
+          card
+            .querySelector(".product-tile-v2--image img")
+            ?.getAttribute("src") || null;
 
         return { name, price, image, link };
       });
     });
     await browser.close();
+
     return products;
   } catch (error) {
-    console.log("No such selector found.");
+    console.log("No such selector found.", error);
     await browser.close();
     return [];
   }

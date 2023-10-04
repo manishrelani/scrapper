@@ -3,7 +3,7 @@ const service = require("../services/products.service");
 const findAllProducts = async (req, res, next) => {
   try {
     const product_name = req.query.product_name;
-    console.log("sdsd",product_name)
+
     if (product_name !== null && product_name.trim() !== "") {
       const result = await service.fetchAllProducts(product_name);
       if (result.message && result.stack) {

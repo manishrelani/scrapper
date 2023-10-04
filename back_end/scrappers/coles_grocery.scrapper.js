@@ -23,6 +23,7 @@ const website_1 = async (product_name) => {
     await page.waitForSelector('[data-testid="product-tile"]', {
       timeout: 5000,
     });
+
     const products = await page.evaluate(() => {
       const productCards = Array.from(
         document.querySelectorAll('[data-testid="product-tile"]')
@@ -31,7 +32,7 @@ const website_1 = async (product_name) => {
       return subProducts.map((card) => {
         const name =
           card.querySelector(".product__title")?.textContent || "N/A";
-        const price = card.querySelector(".price")?.textContent || "N/A";
+        const price = card.querySelector(".price")?.textContent || null;
 
         const anchor = card.querySelector("a.product__link.product__image");
 
@@ -41,15 +42,21 @@ const website_1 = async (product_name) => {
 
         const imgSrc = card.querySelector('img[data-testid="product-image"]');
 
-        const image = imgSrc ? imgSrc.getAttribute("src") : null;
-
+        let image = imgSrc ? imgSrc.getAttribute("src") : null;
+        const firstFourLetters = image.substring(0, 4);
+        if (firstFourLetters != "https") {
+          const match = link.match(/\d+$/);
+          const lastSevenLetters = match[0];
+          const firstLetter = lastSevenLetters.charAt(0);
+          image = `https://productimages.coles.com.au/productimages/${firstLetter}/${lastSevenLetters}.jpg?w=200`;
+        }
         return { name, price, link, image };
       });
     });
     await browser.close();
     return products;
   } catch (error) {
-    console.log("No such selector found.");
+    console.log("No such selector found.", error);
     await browser.close();
     return []; // Return an empty array if the selector is not found
   }
