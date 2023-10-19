@@ -1,4 +1,4 @@
-package com.example.grocery_scanner
+package com.musketeer
 
 import io.flutter.embedding.android.FlutterActivity
 
